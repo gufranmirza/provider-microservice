@@ -3,7 +3,7 @@ package renderers
 import (
 	"net/http"
 
-	"github.com/gufranmirza/provider-microservice/proto/v1/error/v1error"
+	"github.com/gufranmirza/microservice-proto/proto/v1/error/v1error"
 
 	"github.com/go-chi/render"
 )

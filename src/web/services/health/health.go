@@ -9,20 +9,19 @@ import (
 	"github.com/go-chi/render"
 	"github.com/gufranmirza/microservice-proto/proto/v1/health/v1health"
 	"github.com/gufranmirza/provider-microservice/logging"
+
 	_ "github.com/gufranmirza/provider-microservice/web/renderers" // swag
 	"github.com/spf13/viper"
 )
 
 type health struct {
 	logger logging.Logger
-	db     connection.MongoStore
 }
 
 // NewHealth returns health impl
 func NewHealth() Health {
 	return &health{
 		logger: logging.NewLogger(),
-		db:     connection.NewMongoStore(),
 	}
 }
 
@@ -52,10 +51,6 @@ func (h *health) GetHealth(w http.ResponseWriter, r *http.Request) {
 
 	inbound := []*v1health.InboundConnection{}
 	outbound := []*v1health.OutboundConnection{}
-
-	// add mongo connection status
-	mongo := h.db.Health()
-	outbound = append(outbound, mongo)
 
 	// add internal server details
 	name, _ := os.Hostname()
