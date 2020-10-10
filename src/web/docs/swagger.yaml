@@ -1,178 +1,66 @@
-basePath: /recruiter-api/v1
+basePath: /provider-api/v1
 definitions:
-  authservice.authenticateRequest:
-    $ref: '#/definitions/v1auth.AuthenticateRequest'
-  authservice.loginRequest:
-    $ref: '#/definitions/v1auth.LoginRequest'
-  authservice.signupRequest:
-    $ref: '#/definitions/v1auth.SignUpRequest'
-  v1auth.AuthenticateRequest:
-    properties:
-      token:
-        description: token used to exchnage with jwt and refresh token
-        type: string
-    type: object
-  v1auth.AuthenticateResponse:
-    properties:
-      access_token:
-        description: access token
-        type: string
-      refresh_token:
-        description: resfresh token
-        type: string
-    type: object
-  v1auth.LoginRequest:
-    properties:
-      email:
-        description: email address to login with
-        type: string
-    type: object
-  v1auth.SignUpRequest:
-    properties:
-      company_name:
-        description: company name
-        type: string
-      designation:
-        description: designation of the user
-        type: string
-      email:
-        description: office mail of user
-        type: string
-      first_name:
-        description: firstname of the user
-        type: string
-    type: object
   v1error.ErrorResponse:
     properties:
       Code:
-        description: application-specific error code
         type: integer
       Error:
-        description: application-level error message, for debugging
         type: string
       StatusText:
-        description: user-level status message
         type: string
     type: object
   v1health.Health:
     properties:
       inbound_connections:
-        description: inbound connections list
         items:
-          $ref: '#/definitions/v1health.InboundConnection'
+          type: InboundConnection
         type: array
       outbound_connections:
-        description: outbound connections list
         items:
-          $ref: '#/definitions/v1health.OutboundConnection'
+          type: OutboundConnection
         type: array
       service_name:
-        description: service name
         type: string
       service_provider:
-        description: service provider name
         type: string
       service_start_time_utc:
-        description: service start time in utc
         type: string
       service_status:
-        description: service status
-        type: integer
+        type: ServiceStatus
       service_version:
-        description: service version
         type: string
       timestamp_utc:
-        description: current timestamp in utc
         type: string
       uptime:
-        description: service uptime in utc
         type: number
     type: object
-  v1health.InboundConnection:
+  v1product.Product:
     properties:
-      address:
-        description: ip address of the application
+      category:
+        type: ProductCategory
+      description:
         type: string
-      application_name:
-        description: name of the application
+      id:
         type: string
-      connection_status:
-        description: connectins status of the application
-        type: integer
-      hostname:
-        description: hostname
+      in_stock:
+        type: boolean
+      manufacturer:
         type: string
-      os:
-        description: OS
+      name:
         type: string
-      timestamp_utc:
-        description: current timestamp in utc
+      price:
         type: string
-    type: object
-  v1health.OutboundConnection:
-    properties:
-      application_name:
-        description: applcition name
-        type: string
-      connection_status:
-        description: connection status of application
-        type: integer
-      timestamp_utc:
-        description: current timestamp in utc
-        type: string
-      urls:
-        description: connection urls
-        items:
-          type: string
-        type: array
     type: object
 host: localhost:8001
 info:
-  contact:
-    email: hello@jobbox.ai
-    name: API Support
-    url: http://jobbox.ai
-  description: Recruiter API Documentation
+  contact: {}
+  description: API Documentation
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: Recruiter API Documentation
+  title: API Documentation
   version: "2.0"
 paths:
-  /authenticate:
-    post:
-      consumes:
-      - application/json
-      description: It allows to objten JWT and Refresh token
-      parameters:
-      - description: authenticate
-        in: body
-        name: '*'
-        required: true
-        schema:
-          $ref: '#/definitions/authservice.authenticateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/v1auth.AuthenticateResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-      summary: Authenticate with Token
-      tags:
-      - authentication
   /health:
     get:
       consumes:
@@ -200,22 +88,24 @@ paths:
       summary: Get health of the service
       tags:
       - health
-  /login:
-    post:
+  /products/productID:
+    get:
       consumes:
       - application/json
-      description: It allows to login to account with email address registered
+      description: It allows to reterive a Product by ID
       parameters:
-      - description: login with email
-        in: body
-        name: '*'
+      - description: Product ID
+        in: path
+        name: productID
         required: true
-        schema:
-          $ref: '#/definitions/authservice.loginRequest'
+        type: string
       produces:
       - application/json
       responses:
-        "200": {}
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1product.Product'
         "400":
           description: Bad Request
           schema:
@@ -228,92 +118,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1error.ErrorResponse'
-      summary: Login to account with email
+      summary: Get a Product
       tags:
-      - authentication
-  /logout:
-    post:
-      consumes:
-      - application/json
-      description: It allows to logout users from account with JWT
-      parameters:
-      - description: BEARER JWT
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200": {}
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-      summary: Logout
-      tags:
-      - authentication
-  /signup:
-    post:
-      consumes:
-      - application/json
-      description: It allows to sign up with email address and personal details
-      parameters:
-      - description: signup with email
-        in: body
-        name: '*'
-        required: true
-        schema:
-          $ref: '#/definitions/authservice.signupRequest'
-      produces:
-      - application/json
-      responses:
-        "200": {}
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-      summary: Sign up with email
-      tags:
-      - authentication
-  /validate:
-    post:
-      consumes:
-      - application/json
-      description: It allows to logout users from account with JWT
-      parameters:
-      - description: BEARER JWT
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200": {}
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
-      summary: Logout
-      tags:
-      - authentication
+      - product
 securityDefinitions:
   ApiKeyAuth:
     in: header

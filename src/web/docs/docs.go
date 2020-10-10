@@ -18,11 +18,7 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "contact": {
-            "name": "API Support",
-            "url": "http://jobbox.ai",
-            "email": "hello@jobbox.ai"
-        },
+        "contact": {},
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -32,58 +28,6 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/authenticate": {
-            "post": {
-                "description": "It allows to objten JWT and Refresh token",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Authenticate with Token",
-                "parameters": [
-                    {
-                        "description": "authenticate",
-                        "name": "*",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/authservice.authenticateRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1auth.AuthenticateResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/health": {
             "get": {
                 "description": "It returns the health of the service",
@@ -125,9 +69,9 @@ var doc = `{
                 }
             }
         },
-        "/login": {
-            "post": {
-                "description": "It allows to login to account with email address registered",
+        "/products/productID": {
+            "get": {
+                "description": "It allows to reterive a Product by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -135,22 +79,25 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "authentication"
+                    "product"
                 ],
-                "summary": "Login to account with email",
+                "summary": "Get a Product",
                 "parameters": [
                     {
-                        "description": "login with email",
-                        "name": "*",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/authservice.loginRequest"
-                        }
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "productID",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1product.Product"
+                        }
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -165,131 +112,6 @@ var doc = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/logout": {
-            "post": {
-                "description": "It allows to logout users from account with JWT",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Logout",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "BEARER JWT",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {},
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/signup": {
-            "post": {
-                "description": "It allows to sign up with email address and personal details",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Sign up with email",
-                "parameters": [
-                    {
-                        "description": "signup with email",
-                        "name": "*",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/authservice.signupRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {},
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/validate": {
-            "post": {
-                "description": "It allows to logout users from account with JWT",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Logout",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "BEARER JWT",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {},
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/v1error.ErrorResponse"
                         }
@@ -299,80 +121,16 @@ var doc = `{
         }
     },
     "definitions": {
-        "authservice.authenticateRequest": {
-            "$ref": "#/definitions/v1auth.AuthenticateRequest"
-        },
-        "authservice.loginRequest": {
-            "$ref": "#/definitions/v1auth.LoginRequest"
-        },
-        "authservice.signupRequest": {
-            "$ref": "#/definitions/v1auth.SignUpRequest"
-        },
-        "v1auth.AuthenticateRequest": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "description": "token used to exchnage with jwt and refresh token",
-                    "type": "string"
-                }
-            }
-        },
-        "v1auth.AuthenticateResponse": {
-            "type": "object",
-            "properties": {
-                "access_token": {
-                    "description": "access token",
-                    "type": "string"
-                },
-                "refresh_token": {
-                    "description": "resfresh token",
-                    "type": "string"
-                }
-            }
-        },
-        "v1auth.LoginRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "description": "email address to login with",
-                    "type": "string"
-                }
-            }
-        },
-        "v1auth.SignUpRequest": {
-            "type": "object",
-            "properties": {
-                "company_name": {
-                    "description": "company name",
-                    "type": "string"
-                },
-                "designation": {
-                    "description": "designation of the user",
-                    "type": "string"
-                },
-                "email": {
-                    "description": "office mail of user",
-                    "type": "string"
-                },
-                "first_name": {
-                    "description": "firstname of the user",
-                    "type": "string"
-                }
-            }
-        },
         "v1error.ErrorResponse": {
             "type": "object",
             "properties": {
                 "Code": {
-                    "description": "application-specific error code",
                     "type": "integer"
                 },
                 "Error": {
-                    "description": "application-level error message, for debugging",
                     "type": "string"
                 },
                 "StatusText": {
-                    "description": "user-level status message",
                     "type": "string"
                 }
             }
@@ -381,99 +139,63 @@ var doc = `{
             "type": "object",
             "properties": {
                 "inbound_connections": {
-                    "description": "inbound connections list",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/v1health.InboundConnection"
+                        "type": "InboundConnection"
                     }
                 },
                 "outbound_connections": {
-                    "description": "outbound connections list",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/v1health.OutboundConnection"
+                        "type": "OutboundConnection"
                     }
                 },
                 "service_name": {
-                    "description": "service name",
                     "type": "string"
                 },
                 "service_provider": {
-                    "description": "service provider name",
                     "type": "string"
                 },
                 "service_start_time_utc": {
-                    "description": "service start time in utc",
                     "type": "string"
                 },
                 "service_status": {
-                    "description": "service status",
-                    "type": "integer"
+                    "type": "ServiceStatus"
                 },
                 "service_version": {
-                    "description": "service version",
                     "type": "string"
                 },
                 "timestamp_utc": {
-                    "description": "current timestamp in utc",
                     "type": "string"
                 },
                 "uptime": {
-                    "description": "service uptime in utc",
                     "type": "number"
                 }
             }
         },
-        "v1health.InboundConnection": {
+        "v1product.Product": {
             "type": "object",
             "properties": {
-                "address": {
-                    "description": "ip address of the application",
+                "category": {
+                    "type": "ProductCategory"
+                },
+                "description": {
                     "type": "string"
                 },
-                "application_name": {
-                    "description": "name of the application",
+                "id": {
                     "type": "string"
                 },
-                "connection_status": {
-                    "description": "connectins status of the application",
-                    "type": "integer"
+                "in_stock": {
+                    "type": "boolean"
                 },
-                "hostname": {
-                    "description": "hostname",
+                "manufacturer": {
                     "type": "string"
                 },
-                "os": {
-                    "description": "OS",
+                "name": {
                     "type": "string"
                 },
-                "timestamp_utc": {
-                    "description": "current timestamp in utc",
+                "price": {
                     "type": "string"
-                }
-            }
-        },
-        "v1health.OutboundConnection": {
-            "type": "object",
-            "properties": {
-                "application_name": {
-                    "description": "applcition name",
-                    "type": "string"
-                },
-                "connection_status": {
-                    "description": "connection status of application",
-                    "type": "integer"
-                },
-                "timestamp_utc": {
-                    "description": "current timestamp in utc",
-                    "type": "string"
-                },
-                "urls": {
-                    "description": "connection urls",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             }
         }
@@ -503,10 +225,10 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "2.0",
 	Host:        "localhost:8001",
-	BasePath:    "/recruiter-api/v1",
+	BasePath:    "/provider-api/v1",
 	Schemes:     []string{},
-	Title:       "Recruiter API Documentation",
-	Description: "Recruiter API Documentation",
+	Title:       "API Documentation",
+	Description: "API Documentation",
 }
 
 type s struct{}

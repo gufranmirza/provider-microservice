@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-chi/render"
+	_ "github.com/gufranmirza/microservice-proto/proto/v1/error/v1error" //used in swag
 	"github.com/gufranmirza/microservice-proto/proto/v1/health/v1health"
 	"github.com/gufranmirza/provider-microservice/logging"
 

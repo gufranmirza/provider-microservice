@@ -1,13 +1,12 @@
 {
-    "service_name": "Recruiter API",
-    "service_provider": "Job Box Tech",
+    "service_name": "Provider Microservice API",
+    "service_provider": "Ednsquare Tech",
     "service_version": "v1.0.0",
     "service_started_timestamp_utc": "0001-01-01T00:00:00Z",
 
     "website": {
-        "domain_name": "https://recruiter.jobbox.ai",
-        "auth_login_url": "/start-session",
-        "product_name": "Jobbox"
+        "domain_name": "https://ednsquare.com",
+        "product_name": "Provider Microservice"
     },
 
     "host": {
@@ -17,7 +16,7 @@
     },
     "web": {
         "api_version_v1": "/v1",
-        "url_prefix": "/recruiter-api",
+        "url_prefix": "/provider-api",
         "allowed_origins": ["*"],
         "allowed_methods":   ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allowed_headers":   ["Accept", "Authorization", "Content-Type", "X-CSRF-Token"],
@@ -27,31 +26,9 @@
         "request_timeout_in_sec": 60,
         "show_api_docs": true
     },
-    "db": {
-        "host": "mongodb://localhost:27017",
-        "database": "recruiter_db",
-        "query_timeout_in_sec": 40,
-        "recruiters_collection": "recruiters",
-        "access_tokens_collection": "access_tokens"
-    },
-    "jwt": {
-        "auth_jwt_expiry" : "15m",
-        "auth_jwt_refresh_expiry":"1h",
-        "auth_jwt_secret": "secret", 
-        "auth_login_token_expiry" : "24h"
-    },
-    "db_debug":false,
     "logging": {
         "text_logging": false,
         "log_level": "DEBUG",
-        "log_filename": "platform-recruiter-api.log"
-    },
-    "email": {
-		"smtp_host": "smtp.gmail.com",
-		"smtp_port": 465,
-		"smtp_user": "noreply@jobbox.ai",
-        "smtp_password": "MonsterVirus@21052016",
-        "from_name": "Jobbox Tech",
-        "from_address": "noreply@jobbox.ai"
+        "log_filename": "microservice-proto-api.log"
     }
 }
